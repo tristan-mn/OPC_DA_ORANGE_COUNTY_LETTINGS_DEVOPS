@@ -10,8 +10,10 @@ class Address(models.Model):
         models (object): on hérite de l'objet Model des models de database de django
 
     Returns:
-        string: on retourne une chaine de caractères représentant l'instance avec le numero et la rue
+        string: on retourne une chaine de caractères
+        représentant l'instance avec le numero et la rue
     """
+
     number = models.PositiveIntegerField(validators=[MaxValueValidator(9999)])
     street = models.CharField(max_length=64)
     city = models.CharField(max_length=64)
@@ -23,7 +25,7 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.number} {self.street}"
-    
+
     class Meta:
         verbose_name_plural = "Addresses"
 
@@ -38,6 +40,7 @@ class Letting(models.Model):
     Returns:
         string: on retourne une chaine de caractères représentant l'instance avec le titre
     """
+
     title = models.CharField(max_length=256)
     address = models.OneToOneField(Address, on_delete=models.CASCADE)
 

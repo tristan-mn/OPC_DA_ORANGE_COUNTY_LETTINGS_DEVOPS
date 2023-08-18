@@ -1,23 +1,42 @@
 version: 2.1
-executors:
-  my-custom-executor:
-    docker:
-      - image: cimg/base:stable
-        auth:
-          # ensure you have first added these secrets
-          # visit app.circleci.com/settings/project/github/tristan-mn/OPC_DA_P13_ORANGE_COUNTY_LETTINGS_DEVOPS/environment-variables
-          username: $DOCKER_HUB_USER
-          password: $DOCKER_HUB_PASSWORD
-jobs:
-  my-job-name:
 
-    executor: my-custom-executor
+orbs:
+  # The python orb contains a set of prepackaged CircleCI configuration you can use repeatedly in your configuration files
+  # Orb commands and jobs help you with common scripting around a language/tool
+  # so you dont have to copy and paste it everywhere.
+  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
+  python: circleci/python@1.5.0
+  heroku: circleci/heroku@1.0.1
+
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  build-and-test:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/python:3.10.4
+    working_directory: ~/project
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run: |
-          # echo Hello, World!
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Tests
+          command: pytest
+      - run:
+          name: Linting
+          command: flake8
 
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  my-custom-workflow:
+  build-and-test:
     jobs:
-      - my-job-name
+      - build-and-test:
+          filters:
+            branches:
+              ignore: master

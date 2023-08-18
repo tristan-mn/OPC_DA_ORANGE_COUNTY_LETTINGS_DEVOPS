@@ -122,7 +122,7 @@ STATICFILES_DIRS = [
 
 
 sentry_sdk.init(
-    dsn="https://4abc5410cfa7fcd6fb437ee4cc3338ce@o4505714900533248.ingest.sentry.io/4505714952110080",
+    dsn="SENTRY_KEY",
     integrations=[DjangoIntegration()],
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.

@@ -77,19 +77,16 @@ workflows:
               ignore: master
   build-and-push-and-deploy:
     jobs:
-      - build-and-test:
-          filters:
-            branches:
-              ignore: master
+      - build-and-test
       - build-and-push:
           requires:
             - build-and-test
           filters:
             branches:
-              only: master
+              only: main
       - deploy:
           requires:
             - build-and-push
           filters:
             branches:
-              only: master
+              only: main

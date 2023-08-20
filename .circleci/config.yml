@@ -38,14 +38,16 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 24.0.5
+          version: 19.03.13
           docker_layer_caching: true
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker build -t opc-p13-lettings:latest .
-          docker tag opc-p13-lettings tristanmn/opc-p13-lettings:latest
-          docker push tristanmn/opc-p13-lettings:latest
+          docker build -t theharrypop/oc-lettings:$TAG .
+          docker tag theharrypop/oc-lettings:$TAG theharrypop/oc-lettings:latest
+          docker push theharrypop/oc-lettings:$TAG
+          docker push theharrypop/oc-lettings:latest
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

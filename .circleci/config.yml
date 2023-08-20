@@ -41,7 +41,6 @@ jobs:
           version: 24.0.5
           docker_layer_caching: true
       - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker build -t opc-p13-lettings:latest .
           docker tag opc-p13-lettings tristanmn/opc-p13-lettings:latest

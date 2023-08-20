@@ -33,12 +33,12 @@ jobs:
 
   build-and-push:
     docker:
-      - image: cimg/python:3.10.4
+      - image: docker
     working_directory: ~/project
     steps:
       - checkout
       - setup_remote_docker:
-          version: 19.03.13
+          version: 24.0.5
           docker_layer_caching: true
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM

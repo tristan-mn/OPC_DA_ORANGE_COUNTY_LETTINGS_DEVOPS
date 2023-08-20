@@ -46,6 +46,25 @@ jobs:
           docker build -t opc-p13-lettings:latest .
           docker tag opc-p13-lettings tristanmn/opc-p13-lettings:latest
           docker push tristanmn/opc-p13-lettings:latest
+  
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - run:
+          name: Storing previous commit
+          command: |
+            git rev-parse HEAD > ./commit.txt
+      - heroku/install
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+      - run:
+          name: Pushing to heroku registry
+          command: |
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a ${HEROKU_APP_NAME} web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a ${HEROKU_APP_NAME} web
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -56,3 +75,12 @@ workflows:
           filters:
             branches:
               ignore: master
+  build-and-push-and-deploy:
+    jobs:
+      - build-and-test
+      - build-and-push:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: master

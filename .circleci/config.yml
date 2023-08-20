@@ -38,7 +38,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 24.0.5
+          version: 19.03.13
           docker_layer_caching: true
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM

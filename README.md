@@ -18,7 +18,7 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 #### Cloner le repository
 
 - `cd /path/to/put/project/in`
-- `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
+- `git clone https://github.com/tristan-mn/OPC_DA_P13_ORANGE_COUNTY_LETTINGS_DEVOPS.git`
 
 #### Créer l'environnement virtuel
 
@@ -66,7 +66,7 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 
 #### Panel d'administration
 
-- Aller sur `http://localhost:8000/admin`
+- Aller sur `http://localhost:8000/admin/`
 - Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!`
 
 ### Windows
@@ -76,4 +76,36 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
 
-oko
+### Déploiement
+
+Nécessite :
+- Compte CircleCi
+- Compte Docker
+- Compte Heroku
+- Compte Sentry
+
+Le déploiement est géré par le fichier config.yml présent dans le dossier ./.circleci. Ce dernier est provoqué lors d'un push du code vers le repository GitHub.
+Un push sur la branche main déclenchera les tests pytest ainsi que les tests flake8. Par la suite, l'application est conteneurisée avec Docker et pour finir 
+elle est déployée en ligne grâce à Heroku.
+
+URL de l'application en ligne : https://lettings-2f52c82babb6.herokuapp.com/
+
+Dans le cas d'un push sur une branche autre que "main", seuls les tests pytest et flake8 seront réalisés.
+
+Dans le dépôt CircleCi renseigner les variables d'environnement :
+- `SECRET_KEY` = Clé secrète de l'application Django
+- `DOCKER_USER` = Votre identifiant DOCKERHUB
+- `DOCKER_PASS` = Votre mot de passe DOCKERHUB
+- `HEROKU_API_KEY` = Clé de l'application HEROKU
+- `HEROKU_APP_NAME` = Nom de l'application HEROKU
+
+Dans le fichier config.yml remplacer:
+- `tristanmn/opc-p13-lettings` par le nom de votre dépôt DockerHub
+
+Dans le fichier .env renseigner :
+- `SECRET_KEY`
+- `ALLOWED_HOST`
+- `DEBUG` = 0 pour False, 1 pour True
+- `SENTRY_KEY` pour l'utilisation de l'application SENTRY
+
+L'URL suivante : `https://oc-lettings-2022.herokuapp.com/sentry-debug/` soulève une exception pour tester le bon fonctionnement du suivi de problèmes sur Sentry

@@ -71,19 +71,22 @@ workflows:
       - build-and-test:
           filters:
             branches:
-              ignore: master
+              ignore: main
   build-and-push-and-deploy:
     jobs:
       - build-and-test
+          context: public
       - build-and-push:
           requires:
             - build-and-test
           filters:
             branches:
               only: main
+          context: public
       - deploy:
           requires:
             - build-and-push
           filters:
             branches:
               only: main
+          context: public

@@ -107,5 +107,3 @@ Dans le fichier .env renseigner :
 - `ALLOWED_HOST`
 - `DEBUG` = 0 pour False, 1 pour True
 - `SENTRY_KEY` pour l'utilisation de l'application SENTRY
-
-L'URL suivante : `https://oc-lettings-2022.herokuapp.com/sentry-debug/` soulève une exception pour tester le bon fonctionnement du suivi de problèmes sur Sentry
